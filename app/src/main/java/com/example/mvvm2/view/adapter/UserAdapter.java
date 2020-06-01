@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.CustomHolder> {
 
-    private ArrayList<UserViewModel> arrayList = new ArrayList<>();
+    private ArrayList<UserViewModel> arrayList;
     private LayoutInflater layoutInflater;
 
 

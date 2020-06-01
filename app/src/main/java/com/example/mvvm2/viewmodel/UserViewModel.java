@@ -32,7 +32,7 @@ public class UserViewModel extends BaseObservable {
 
         /// connect to server
         for (int i = 0; i < 20; i++) {
-            User user = new User("mahdi: " + i, "0936");
+            User user = new User("mahdi: " + i, "09362222222");
             UserViewModel userViewModel = new UserViewModel(user);
             arrayList.add(userViewModel);
         }
@@ -50,13 +50,10 @@ public class UserViewModel extends BaseObservable {
     @BindingAdapter("bind.recyclerUser")
     public static void recyclerViewBinder(final RecyclerView recyclerView, final MutableLiveData<ArrayList<UserViewModel>> arrayListMutableLiveData) {
 
-        arrayListMutableLiveData.observe((LifecycleOwner) recyclerView.getContext(), new Observer<ArrayList<UserViewModel>>() {
-            @Override
-            public void onChanged(ArrayList<UserViewModel> userViewModels) {
-                UserAdapter userAdapter = new UserAdapter(userViewModels);
-                recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext(), LinearLayoutManager.VERTICAL, false));
-                recyclerView.setAdapter(userAdapter);
-            }
+        arrayListMutableLiveData.observe((LifecycleOwner) recyclerView.getContext(), userViewModels -> {
+            UserAdapter userAdapter = new UserAdapter(userViewModels);
+            recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext(), LinearLayoutManager.VERTICAL, false));
+            recyclerView.setAdapter(userAdapter);
         });
     }
 
