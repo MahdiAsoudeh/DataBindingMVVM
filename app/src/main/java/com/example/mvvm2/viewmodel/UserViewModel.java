@@ -11,8 +11,11 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.mvvm2.model.User;
+import com.example.mvvm2.retrofit.user.UsersRepository;
 import com.example.mvvm2.view.adapter.UserAdapter;
+
 import java.util.ArrayList;
 
 public class UserViewModel extends BaseObservable {
@@ -22,7 +25,7 @@ public class UserViewModel extends BaseObservable {
     private String tell;
     private Context context;
 
-    private MutableLiveData<ArrayList<UserViewModel>> mutableLiveData = new MutableLiveData<>();
+    private MutableLiveData<ArrayList<UserViewModel>> arrayListMutableLiveData = new MutableLiveData<>();
     private ArrayList<UserViewModel> arrayList = new ArrayList<>();
 
 
@@ -31,12 +34,27 @@ public class UserViewModel extends BaseObservable {
 
 
         /// connect to server
-        for (int i = 0; i < 20; i++) {
-            User user = new User("mahdi: " + i, "09362222222");
-            UserViewModel userViewModel = new UserViewModel(user);
-            arrayList.add(userViewModel);
-        }
-        mutableLiveData.setValue(arrayList);
+
+        UsersRepository usersRepository = new UsersRepository();
+        usersRepository.getUsers();
+        usersRepository.getArrayListMutableLiveData().observe((LifecycleOwner) context, users -> {
+
+            for (int i=0; i<users.size() ; i++){
+                UserViewModel userViewModel = new UserViewModel(users.get(i));
+                arrayList.add(userViewModel);
+            }
+            notifyPropertyChanged(BR.arrayList);
+
+        });
+
+
+
+//        for (int i = 0; i < 20; i++) {
+//            User user = new User("mahdi: " + i, "09362222222");
+//            UserViewModel userViewModel = new UserViewModel(user);
+//            arrayList.add(userViewModel);
+//        }
+//        mutableLiveData.setValue(arrayList);
 
 
     }
@@ -48,20 +66,24 @@ public class UserViewModel extends BaseObservable {
 
 
     @BindingAdapter("bind.recyclerUser")
-    public static void recyclerViewBinder(final RecyclerView recyclerView, final MutableLiveData<ArrayList<UserViewModel>> arrayListMutableLiveData) {
+    public static void recyclerViewBinder(final RecyclerView recyclerView,
+                                          final MutableLiveData<ArrayList<UserViewModel>> arrayListMutableLiveData) {
 
         arrayListMutableLiveData.observe((LifecycleOwner) recyclerView.getContext(), userViewModels -> {
             UserAdapter userAdapter = new UserAdapter(userViewModels);
-            recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext(), LinearLayoutManager.VERTICAL, false));
+            recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext(),
+                    LinearLayoutManager.VERTICAL, false));
             recyclerView.setAdapter(userAdapter);
         });
     }
 
 
     @BindingAdapter("bind.recyclerUser")
-    public static void recyclerViewBinder(final RecyclerView recyclerView, final ArrayList<UserViewModel> userViewModelArrayList) {
+    public static void recyclerViewBinder(final RecyclerView recyclerView,
+                                          final ArrayList<UserViewModel> userViewModelArrayList) {
         UserAdapter userAdapter = new UserAdapter(userViewModelArrayList);
-        recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext(), LinearLayoutManager.VERTICAL, false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext(),
+                LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(userAdapter);
     }
 
@@ -98,11 +120,11 @@ public class UserViewModel extends BaseObservable {
 
     @Bindable
     public MutableLiveData<ArrayList<UserViewModel>> getMutableLiveData() {
-        return mutableLiveData;
+        return arrayListMutableLiveData;
     }
 
     public void setMutableLiveData(MutableLiveData<ArrayList<UserViewModel>> mutableLiveData) {
-        this.mutableLiveData = mutableLiveData;
+        this.arrayListMutableLiveData = mutableLiveData;
     }
 
     @Bindable
