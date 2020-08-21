@@ -1,4 +1,4 @@
-package com.example.mvvm2.retrofit;
+package com.example.mvvm2.model.remote.retrofit;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

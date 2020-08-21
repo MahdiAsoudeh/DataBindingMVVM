@@ -1,10 +1,10 @@
-package com.example.mvvm2.retrofit.user;
+package com.example.mvvm2.model.remote.user;
 
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.mvvm2.model.User;
-import com.example.mvvm2.retrofit.ApiService;
-import com.example.mvvm2.retrofit.RetrofitClass;
+import com.example.mvvm2.model.remote.retrofit.ApiService;
+import com.example.mvvm2.model.remote.retrofit.RetrofitClass;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.example.mvvm2.view.adapter;
+package com.example.mvvm2.view;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;

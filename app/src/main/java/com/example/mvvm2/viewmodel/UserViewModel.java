@@ -1,6 +1,7 @@
 package com.example.mvvm2.viewmodel;
 
 import android.content.Context;
+import android.os.Handler;
 
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
@@ -8,13 +9,11 @@ import androidx.databinding.BindingAdapter;
 import androidx.databinding.library.baseAdapters.BR;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mvvm2.model.User;
-import com.example.mvvm2.retrofit.user.UsersRepository;
-import com.example.mvvm2.view.adapter.UserAdapter;
+import com.example.mvvm2.view.UserAdapter;
 
 import java.util.ArrayList;
 
@@ -33,27 +32,35 @@ public class UserViewModel extends BaseObservable {
         this.context = context;
 
 
-        /// connect to server
+//        /// connect to server
+//
+//        UsersRepository usersRepository = new UsersRepository();
+//        usersRepository.getUsers();
+//        usersRepository.getArrayListMutableLiveData().observe((LifecycleOwner) context, users -> {
+//
+//            for (int i=0; i<users.size() ; i++){
+//                UserViewModel userViewModel = new UserViewModel(users.get(i));
+//                arrayList.add(userViewModel);
+//            }
+//            notifyPropertyChanged(BR.arrayList);
+//
+//        });
 
-        UsersRepository usersRepository = new UsersRepository();
-        usersRepository.getUsers();
-        usersRepository.getArrayListMutableLiveData().observe((LifecycleOwner) context, users -> {
 
-            for (int i=0; i<users.size() ; i++){
-                UserViewModel userViewModel = new UserViewModel(users.get(i));
-                arrayList.add(userViewModel);
-            }
-            notifyPropertyChanged(BR.arrayList);
-
-        });
+//        new Handler().postDelayed(() -> {
 
 
+        for (int i = 0; i < 20; i++) {
+            User user = new User("mahdi: " + i, "09362222222");
+            UserViewModel userViewModel = new UserViewModel(user);
+            arrayList.add(userViewModel);
+        }
 
-//        for (int i = 0; i < 20; i++) {
-//            User user = new User("mahdi: " + i, "09362222222");
-//            UserViewModel userViewModel = new UserViewModel(user);
-//            arrayList.add(userViewModel);
-//        }
+        notifyPropertyChanged(BR.arrayList);
+
+//        },3000);
+
+
 //        mutableLiveData.setValue(arrayList);
 
 
